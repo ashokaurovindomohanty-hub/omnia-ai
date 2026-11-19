@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build --prefix src/frontend",
   "outputDirectory": "src/frontend/dist",
-  "installCommand": "npm install --prefix src/frontend",
+  "installCommand": "npm install --legacy-peer-deps --prefix src/frontend",
   "framework": "vite"
 }
