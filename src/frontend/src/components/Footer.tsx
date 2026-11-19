@@ -1,4 +1,4 @@
-import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const footerLinks = [
   { label: "Platform", href: "#platform" },
@@ -9,9 +9,9 @@ const footerLinks = [
 ];
 
 const socials = [
-  { icon: SiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: SiX, href: "https://x.com", label: "X" },
-  { icon: SiGithub, href: "https://github.com", label: "GitHub" },
+  { icon: FaLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: FaTwitter, href: "https://x.com", label: "X" },
+  { icon: FaGithub, href: "https://github.com", label: "GitHub" },
 ];
 
 export default function Footer() {
