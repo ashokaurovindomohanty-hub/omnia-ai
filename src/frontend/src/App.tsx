@@ -1,4 +1,3 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import AdvancedFeatures from "./components/AdvancedFeatures";
 import CoreCapabilities from "./components/CoreCapabilities";
@@ -22,14 +21,10 @@ function Home() {
   );
 }
 function App() {
+  const isDemo = window.location.pathname === "/demo";
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/demo" element={<Demo />} />
-        </Routes>
-      </BrowserRouter>
+      {isDemo ? <Demo /> : <Home />}
       <Toaster />
     </div>
   );

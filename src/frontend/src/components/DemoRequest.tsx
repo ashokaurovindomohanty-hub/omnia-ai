@@ -44,7 +44,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   await new Promise((r) => setTimeout(r, 1200));
   setSubmitting(false);
   toast.success("Demo link sent!");
-  navigate(`/demo?email=${form.email}`);
+  window.location.href = `/demo?email=${form.email}`;
 };
 
   return (
