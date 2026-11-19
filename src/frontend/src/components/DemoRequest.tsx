@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ const initialState: FormState = {
 
 export default function DemoRequest() {
   const [form, setForm] = useState<FormState>(initialState);
+  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -32,19 +34,18 @@ export default function DemoRequest() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.email) {
-      toast.error("Please fill in your name and email.");
-      return;
-    }
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setSubmitted(true);
-    setForm(initialState);
-    toast.success("Demo request sent! We'll be in touch within 24 hours.");
-  };
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!form.name || !form.email) {
+    toast.error("Please fill in your name and email.");
+    return;
+  }
+  setSubmitting(true);
+  await new Promise((r) => setTimeout(r, 1200));
+  setSubmitting(false);
+  toast.success("Demo link sent!");
+  navigate(`/demo?email=${form.email}`);
+};
 
   return (
     <section
