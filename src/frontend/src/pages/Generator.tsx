@@ -17,15 +17,23 @@ const speak=()=>{
   if(!script) return alert("Add script first")
   speechSynthesis.cancel()
   const u=new SpeechSynthesisUtterance(script)
-  u.rate=0.92; u.pitch=1; u.volume=1
+  u.rate=0.92
+  speechSynthesis.speak(u)
   const canvas=canvasRef.current!
   const ctx=canvas.getContext("2d")!
   const im=document.querySelector('img[alt="preview"]') as HTMLImageElement
   canvas.width=1080; canvas.height=1920
-  let t=0, raf:number
+  let t=0
   const animate=()=>{
+    if(!speechSynthesis.speaking) return
     t+=0.02
-    ctx.
+    const zoom=1+t*0.02
+    ctx.clearRect(0,0,1080,1920)
+    if(im) ctx.drawImage(im, -50*zoom, 0, 1080*zoom, 1920)
+    requestAnimationFrame(animate)
+  }
+  animate()
+}
   const canvas=canvasRef.current
   canvas.width=1080; canvas.height=1920
   const ctx=canvas.getContext("2d")!
