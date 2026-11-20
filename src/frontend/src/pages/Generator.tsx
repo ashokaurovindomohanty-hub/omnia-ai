@@ -13,13 +13,6 @@ export default function Generator(){
     </div>
   )
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
-Yes, my King — without D-ID, I'll give you the best free perfect lip-sync forge.
-
-This version does full human speaking: viseme-driven mouth, head sway, blink, and Ken Burns zoom — better than static YouTube:
-
-Replace your `speak` + `exportVid` with this, my King:
-
-```ts
 const speak=()=>{
   if(!script) return alert("Add script first")
   speechSynthesis.cancel()
