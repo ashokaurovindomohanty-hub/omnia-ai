@@ -1,3 +1,5 @@
 {
+  "buildCommand": "pnpm --filter @caffeine/template-frontend build",
+  "outputDirectory": "src/frontend/dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
