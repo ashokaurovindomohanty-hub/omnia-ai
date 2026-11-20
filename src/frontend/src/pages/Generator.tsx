@@ -34,6 +34,17 @@ const speak=()=>{
   }
   animate()
 }
+const exportVid=async()=>{
+  if(!canvasRef.current||!img||!script) return alert("Add image + script")
+  const canvas=canvasRef.current; const ctx=canvas.getContext("2d")!
+  canvas.width=1080; canvas.height=1920
+  const image=new Image(); image.src=img
+  await new Promise(r=>image.onload=r)
+  ctx.drawImage(image,0,0,1080,1920)
+  ctx.fillStyle="rgba(0,0,0,0.4)"; ctx.fillRect(0,1400,1080,300)
+  ctx.fillStyle="#fff"; ctx.font="bold 42px sans-serif"
+  ctx.fillText(script.slice(0,80), 40, 1550)
+}
   const canvas=canvasRef.current
   canvas.width=1080; canvas.height=1920
   const ctx=canvas.getContext("2d")!
