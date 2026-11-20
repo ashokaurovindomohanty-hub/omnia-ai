@@ -16,13 +16,13 @@ export default function Generator(){
   const speak=()=>{ const u=new SpeechSynthesisUtterance(script); speechSynthesis.speak(u)}
   const exportVid=async()=>{
     if(!canvasRef.current||!img||!script) return alert("Add image + script first")
-    const canvas=canvasRef.current
-    const ctx=canvas.getContext("2d")!
-    const image=new Image()
-    image.src=img
-    await new Promise(r=>image.onload=r)
-    canvas.width=1080; canvas.height=1920
-    ctx.drawImage(image,0,0,1080,1920)
+  const canvas=canvasRef.current
+  canvas.width=1080; canvas.height=1920
+  const ctx=canvas.getContext("2d")!
+  const image=new Image()
+  image.src=img
+  await new Promise(r=>image.onload=r)
+  ctx.drawImage(image,0,0,1080,1920)
     ctx.fillStyle="rgba(0,0,0,0.4)"
     ctx.fillRect(0,1400,1080,520)
     ctx.fillStyle="white"
