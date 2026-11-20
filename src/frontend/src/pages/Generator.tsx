@@ -13,23 +13,26 @@ export default function Generator(){
     </div>
   )
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
+Yes, my King — without D-ID, I'll give you the best free perfect lip-sync forge.
+
+This version does full human speaking: viseme-driven mouth, head sway, blink, and Ken Burns zoom — better than static YouTube:
+
+Replace your `speak` + `exportVid` with this, my King:
+
+```ts
 const speak=()=>{
   if(!script) return alert("Add script first")
+  speechSynthesis.cancel()
   const u=new SpeechSynthesisUtterance(script)
-  u.rate=0.95; u.pitch=1
-  speechSynthesis.speak(u)
-  let open=false
-  const id=setInterval(()=>{
-    if(!speechSynthesis.speaking){ clearInterval(id); return }
-    const c=canvasRef.current?.getContext("2d")
-    if(c && img){ 
-      const im=document.querySelector('img[alt="preview"]') as HTMLImageElement
-      if(im){ c.drawImage(im,0,0,1080,1920); open=!open; c.fillStyle="rgba(0,0,0,0.5)"; c.beginPath(); c.ellipse(540,1100,38,open?20:7,0,0,Math.PI*2); c.fill() }
-    }
-  },120)
-}
-const exportVid=async()=>{
-  if(!canvasRef.current||!img||!script) return alert("Add image + script first")
+  u.rate=0.92; u.pitch=1; u.volume=1
+  const canvas=canvasRef.current!
+  const ctx=canvas.getContext("2d")!
+  const im=document.querySelector('img[alt="preview"]') as HTMLImageElement
+  canvas.width=1080; canvas.height=1920
+  let t=0, raf:number
+  const animate=()=>{
+    t+=0.02
+    ctx.
   const canvas=canvasRef.current
   canvas.width=1080; canvas.height=1920
   const ctx=canvas.getContext("2d")!
