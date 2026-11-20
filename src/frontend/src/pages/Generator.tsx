@@ -1,5 +1,8 @@
 import { useRef, useState } from "react"
 export default function Generator(){
+  const [script,setScript]=useState("")
+  const [img,setImg]=useState<string|null>(null)
+  const canvasRef=useRef<HTMLCanvasElement>(null)
   const [key,setKey]=useState("")
   const [unlocked,setUnlocked]=useState(false)
   if(!unlocked) return (
@@ -9,9 +12,6 @@ export default function Generator(){
       <button onClick={()=>key==="omnia2024"?setUnlocked(true):alert("Wrong key")} style={{marginTop:12,width:"100%"}}>Unlock</button>
     </div>
   )
-  const [script,setScript]=useState("")
-  const [img,setImg]=useState<string|null>(null)
-  const canvasRef=useRef<HTMLCanvasElement>(null)
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
   const speak=()=>{ const u=new SpeechSynthesisUtterance(script); speechSynthesis.speak(u)}
   const exportVid=async()=>{
