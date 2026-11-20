@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
 import Demo from "./pages/Demo";
+import Generator from "./pages/Generator";
 function Home() {
   return (
     <>
@@ -21,11 +22,12 @@ function Home() {
   );
 }
 function App() {
-  const isDemo = window.location.pathname === "/demo";
+  const path = window.location.pathname;
+  if (path === "/demo") return <div className="min-h-screen bg-background text-foreground"><Demo /><Toaster /></div>;
+  if (path === "/generator") return <div className="min-h-screen bg-background text-foreground"><Generator /><Toaster /></div>;
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {isDemo ? <Demo /> : <Home />}
-      <Toaster />
+      <Home /><Toaster />
     </div>
   );
 }
