@@ -13,29 +13,8 @@ export default function Generator(){
     </div>
   )
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
-const speak=()=>{
-  if(!script) return alert("Add script first")
-  speechSynthesis.cancel()
-  const u=new SpeechSynthesisUtterance(script)
-  u.rate=0.92
-  speechSynthesis.speak(u)
-  const canvas=canvasRef.current!
-  const ctx=canvas.getContext("2d")!
-  const im=document.querySelector('img[alt="preview"]') as HTMLImageElement
-  canvas.width=1080; canvas.height=1920
-  let t=0
-  const animate=()=>{
-    if(!speechSynthesis.speaking) return
-    t+=0.02
-    const zoom=1+t*0.02
-    ctx.clearRect(0,0,1080,1920)
-    if(im) ctx.drawImage(im, -50*zoom, 0, 1080*zoom, 1920)
-    requestAnimationFrame(animate)
-  }
-  animate()
-}
-const [videoUrl,setVideoUrl]=useState<string|null>(null)
-const previewAndMake=async()=>{
+  const [videoUrl,setVideoUrl]=useState<string|null>(null)
+  const previewAndMake=async()=>{
   if(!img||!script) return alert("Add image + script")
   await exportVid() // make videoUrl inside exportVid via setVideoUrl
 }
