@@ -44,27 +44,6 @@ const exportVid=async()=>{
   ctx.fillStyle="rgba(0,0,0,0.4)"; ctx.fillRect(0,1400,1080,300)
   ctx.fillStyle="#fff"; ctx.font="bold 42px sans-serif"
   ctx.fillText(script.slice(0,80), 40, 1550)
-}
-  const canvas=canvasRef.current
-  canvas.width=1080; canvas.height=1920
-  const ctx=canvas.getContext("2d")!
-  const image=new Image()
-  image.src=img
-  await new Promise(r=>image.onload=r)
-  ctx.drawImage(image,0,0,1080,1920)
-    ctx.fillStyle="rgba(0,0,0,0.4)"
-    ctx.fillRect(0,1400,1080,520)
-    ctx.fillStyle="white"
-    ctx.font="bold 36px sans-serif"
-    const words=script.split(" ")
-    let line=""; let y=1500
-    for(const w of words){
-      const test=line+" "+w
-      if(ctx.measureText(test).width>1000){
-        ctx.fillText(line,40,y); y+=45; line=w
-      } else line=test
-    }
-    ctx.fillText(line,40,y)
     const stream=canvas.captureStream(30)
     const utter=new SpeechSynthesisUtterance(script)
     speechSynthesis.speak(utter)
@@ -79,7 +58,7 @@ const exportVid=async()=>{
     }
     recorder.start()
     setTimeout(()=>recorder.stop(), (script.length/15)*1000)
-  }
+}
   return (
   <div style={{minHeight:"100vh", background:"radial-gradient(1200px 600px at 50% -10%, #6d28ff33, transparent), #07070a", color:"#fff", padding:32}}>
     <div style={{maxWidth:640, margin:"0 auto", background:"rgba(255,255,255,0.06)", backdropFilter:"blur(12px)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:20, padding:24, boxShadow:"0 20px 60px rgba(109,40,255,0.35)"}}>
@@ -97,3 +76,4 @@ const exportVid=async()=>{
   </div>
   )
 }
+
