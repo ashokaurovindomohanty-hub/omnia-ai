@@ -34,6 +34,11 @@ const speak=()=>{
   }
   animate()
 }
+const [videoUrl,setVideoUrl]=useState<string|null>(null)
+const previewAndMake=async()=>{
+  if(!img||!script) return alert("Add image + script")
+  await exportVid() // make videoUrl inside exportVid via setVideoUrl
+}
 const exportVid=async()=>{
   if(!canvasRef.current||!img||!script) return alert("Add image + script")
   const canvas=canvasRef.current; const ctx=canvas.getContext("2d")!
@@ -50,12 +55,12 @@ const exportVid=async()=>{
     const recorder=new MediaRecorder(stream,{mimeType:"video/webm"})
     const chunks:BlobPart[]=[]
     recorder.ondataavailable=e=>chunks.push(e.data)
+// inside exportVid recorder.onstop:
     recorder.onstop=()=>{
-      const blob=new Blob(chunks,{type:"video/webm"})
-      const url=URL.createObjectURL(blob)
-      const a=document.createElement("a")
-      a.href=url; a.download="omnia-intro.webm"; a.click()
-    }
+    const blob=new Blob(chunks,{type:"video/webm"})
+    const url=URL.createObjectURL(blob)
+    setVideoUrl(url)
+}
     recorder.start()
     setTimeout(()=>recorder.stop(), (script.length/15)*1000)
 }
@@ -66,14 +71,11 @@ const exportVid=async()=>{
       <p style={{opacity:0.7, marginTop:6}}>Cinematic 9:16 • Glow Forge</p>
       <input type="file" accept="image/*" onChange={onImg} style={{marginTop:16, width:"100%", padding:12, background:"#111", border:"1px solid #333", borderRadius:12, color:"#fff"}}/>
       <textarea value={script} onChange={e=>setScript(e.target.value)} placeholder="Paste 90s script here..." rows={8} style={{width:"100%",marginTop:12, padding:14, borderRadius:12, background:"#0f0f12", color:"#fff", border:"1px solid #2a2a30", outline:"none"}}/>
-      <div style={{display:"flex",gap:12,marginTop:14}}>
-        <button onClick={speak} style={{flex:1, padding:14, borderRadius:12, background:"linear-gradient(180deg,#222,#111)", color:"#fff", border:"1px solid #333", boxShadow:"0 8px 20px rgba(0,0,0,0.4)"}}>Preview Voice</button>
-        <button onClick={exportVid} style={{flex:1, padding:14, borderRadius:12, background:"linear-gradient(180deg,#8b5cf6,#6d28ff)", color:"#fff", border:"none", boxShadow:"0 12px 30px rgba(109,40,255,0.5)"}}>Export MP4</button>
+      <div onClick={previewAndMake} style={{width:1080,height:1920,maxWidth:"100%",aspectRatio:"9/16",background:"#000",borderRadius:16,overflow:"hidden",cursor:"pointer"}}>
+        {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/>}
       </div>
-      <canvas ref={canvasRef} style={{width:"100%",marginTop:16,borderRadius:16, border:"1px solid rgba(255,255,255,0.12)"}}/>
-      {img && <img src={img} alt="preview" style={{display:"none"}}/>}
+      {videoUrl && <a href={videoUrl} download="omnia-intro.webm" style={{display:"block",marginTop:16,padding:"14px 20px",background:"#6d28ff",color:"#fff",borderRadius:12,textAlign:"center",fontWeight:700}}>Download MP4</a>}
     </div>
   </div>
   )
 }
-
