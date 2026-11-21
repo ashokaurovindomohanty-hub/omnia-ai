@@ -49,14 +49,13 @@ const exportVid=async()=>{
       <h1 style={{fontSize:28, fontWeight:800, letterSpacing:0.5, textShadow:"0 0 20px rgba(109,40,255,0.8)"}}>Omnia MP4 Generator</h1>
       <p style={{opacity:0.7, marginTop:6}}>Cinematic 9:16 • Glow Forge</p>
       <input type="file" accept="image/*" onChange={onImg} style={{marginTop:16, width:"100%", padding:12, background:"#111", border:"1px solid #333", borderRadius:12, color:"#fff"}}/>
-<textarea value={script} onChange={e=>setScript(e.target.value)} placeholder="Paste 90s script here..." rows={8} style={{width:"100%",marginTop:12, padding:14, borderRadius:12, background:"#0f0f12", color:"#fff", border:"1px solid #333"}}/>
-
       <textarea value={script} onChange={e=>setScript(e.target.value)} placeholder="Paste 90s script here..." rows={8} style={{width:"100%",marginTop:12, padding:14, borderRadius:12, background:"#0f0f12", color:"#fff", border:"1px solid #2a2a30", outline:"none"}}/>
       <div onClick={previewAndMake} style={{width:1080,height:1920,maxWidth:"100%",aspectRatio:"9/16",background:"#000",borderRadius:16,overflow:"hidden",cursor:"pointer"}}>
         {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/>}
       </div>
       {videoUrl && <a href={videoUrl} download="omnia-intro.webm" style={{display:"block",marginTop:16,padding:"14px 20px",background:"#6d28ff",color:"#fff",borderRadius:12,textAlign:"center",fontWeight:700}}>Download MP4</a>}
-      <canvas ref={canvasRef} style={{display:"none"}}/>
+      <canvas ref={canvasRef} style={{width:"100%",marginTop:16,borderRadius:16, border:"1px solid rgba(255,255,255,0.12)"}}/>
+      {img && <img src={img} alt="preview" style={{display:"none"}}/>}
     </div>
   </div>
   )
