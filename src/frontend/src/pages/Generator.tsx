@@ -5,6 +5,7 @@ export default function Generator(){
   const canvasRef=useRef<HTMLCanvasElement>(null)
   const [key,setKey]=useState("")
   const [unlocked,setUnlocked]=useState(false)
+  const [videoUrl,setVideoUrl]=useState<string|null>(null)
   if(!unlocked) return (
     <div style={{padding:40,maxWidth:400,margin:"0 auto"}}>
       <h2>Private Generator</h2>
@@ -13,7 +14,6 @@ export default function Generator(){
     </div>
   )
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
-  const [videoUrl,setVideoUrl]=useState<string|null>(null)
   const previewAndMake=async()=>{
   if(!img||!script) return alert("Add image + script")
   await exportVid() // make videoUrl inside exportVid via setVideoUrl
