@@ -33,7 +33,7 @@ const exportVid=async()=>{
 const avatar = new Image(); avatar.src = img!
 await new Promise(r=>avatar.onload=r)
 canvas.width=720; canvas.height=1280
-const drawAvatar = (t:number)=>{
+const drawAvatar = (time:number)=>{
 // subtle head sway + blink + breathing
 let t = 0
 const animate = () => {
