@@ -16,7 +16,7 @@ export default function Generator(){
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
   const previewAndMake=async()=>{
   if(!img||!script) return alert("Add image + script")
-  await exportVid() // make videoUrl inside exportVid via setVideoUrl
+  await exportVid() 
 }
 const exportVid=async()=>{
   if(!canvasRef.current||!img||!script) return alert("Add image + script")
@@ -28,13 +28,67 @@ const exportVid=async()=>{
   ctx.fillStyle="rgba(0,0,0,0.4)"; ctx.fillRect(0,1400,1080,300)
   ctx.fillStyle="#fff"; ctx.font="bold 42px sans-serif"
   ctx.fillText(script.slice(0,80), 40, 1550)
+    const clean = script.replace(/[#*_`\[\]{}|<>]/g, "").replace(/\s+/g," ").trim()
+// 2a: Load image to canvas as avatar base
+const avatar = new Image(); avatar.src = img!
+await new Promise(r=>avatar.onload=r)
+canvas.width=720; canvas.height=1280
+const drawAvatar = (t:number)=>{
+// subtle head sway + blink + breathing
+let t = 0
+const animate = () => {
+  t += 16
+  ctx.clearRect(0,0,canvas.width,canvas.height)
+  const sway = Math.sin(t/800)*6
+  ctx.drawImage(avatar, sway, Math.sin(t/1200)*4, canvas.width, canvas.height)
+  // blink
+  if(Math.floor(t/3000)%2===0 && t%3000<100){
+    ctx.fillStyle="#000"
+    ctx.fillRect(canvas.width/2-100, 420, 200, 10)
+  }
+  if(speechSynthesis.speaking) requestAnimationFrame(animate)
+  else requestAnimationFrame(animate)
+}
+animate()
+// 3: Mouth flap synced to speech
+let mouthOpen = 0
+utter.onboundary = (e:any)=>{
+  mouthOpen = e.charLength % 2 === 0 ? 14 : 4
+}
+const drawMouth = ()=>{
+  if(speechSynthesis.speaking){
+    // warp mouth region
+    ctx.fillStyle="#3a0a0a"
+    ctx.beginPath()
+    ctx.ellipse(360, 560, 32, mouthOpen, 0, 0, Math.PI*2)
+    ctx.fill()
+    mouthOpen *= 0.92 // decay
+  }
+  requestAnimationFrame(drawMouth)
+}
+drawMouth()
+// start recorder AFTER movement
+recorder.start()
+utter.onend = ()=> setTimeout(()=>recorder.stop(), 400)
+  ctx.clearRect(0,0,720,1280)
+  // subtle breathing + head sway
+  const sway = Math.sin(t/800)*6
+  const breath = Math.sin(t/1200)*4
+  ctx.drawImage(avatar, sway, breath, 720, 1280)
+  // blink every 3s
+  if(Math.floor(t/3000)%2===0 && t%3000<120){
+    ctx.fillStyle="rgba(0,0,0,0.8)"
+    ctx.fillRect(260, 420, 200, 12) // eyelid
+  }
+  requestAnimationFrame(drawAvatar)
+}
+requestAnimationFrame(drawAvatar)
     const stream=canvas.captureStream(30)
     const utter=new SpeechSynthesisUtterance(script)
     speechSynthesis.speak(utter)
     const recorder=new MediaRecorder(stream,{mimeType:"video/webm"})
     const chunks:BlobPart[]=[]
     recorder.ondataavailable=e=>chunks.push(e.data)
-// inside exportVid recorder.onstop:
     recorder.onstop=()=>{
     const blob=new Blob(chunks,{type:"video/webm"})
     const url=URL.createObjectURL(blob)
