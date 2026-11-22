@@ -29,6 +29,7 @@ const res = await fetch("https://AshokAMohanty-omnia-wav2lip.hf.space/generate",
     audio_b64: await fetch(URL.createObjectURL(audioBlob)).then(r=>r.arrayBuffer()).then(b=>btoa(String.fromCharCode(...new Uint8Array(b))))
   })
 })
+if(!res.ok){ alert("Space sleeping, wait 30s and tap again"); return }
 const blob = await res.blob()
 const url = URL.createObjectURL(blob)
 video.src = url
@@ -44,7 +45,7 @@ setVideoUrl(url)
       <div onClick={previewAndMake} style={{width:"100%",aspectRatio:"9/16",background:"#000",borderRadius:16,overflow:"hidden",cursor:"pointer"}}>
         {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : img ? <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <span style={{opacity:0.5,display:"flex",alignItems:"center",justifyContent:"center",height:"100%"}}>Tap to preview</span>}
       </div>
-      {videoUrl && <a href={videoUrl} download="omnia-intro.webm" style={{display:"block",marginTop:16,padding:"14px 20px",background:"#6d28ff",color:"#fff",borderRadius:12,textAlign:"center",fontWeight:700}}>Download MP4</a>}
+      {videoUrl && <><video src={videoUrl} controls autoPlay /><a href={videoUrl} download="omnia.mp4">Download MP4</a></>}
       <canvas ref={canvasRef} style={{display:"none"}}/>
     </div>
   </div>
