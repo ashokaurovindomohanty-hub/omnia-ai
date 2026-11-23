@@ -43,9 +43,13 @@ setVideoUrl(url)
       <input type="file" accept="image/*" onChange={onImg} style={{marginTop:16, width:"100%", padding:12, background:"#111", border:"1px solid #333", borderRadius:12, color:"#fff"}}/>
       <textarea value={script} onChange={e=>setScript(e.target.value)} placeholder="Paste 90s script here..." rows={8} style={{width:"100%",marginTop:12, padding:14, borderRadius:12, background:"#0f0f12", color:"#fff", border:"1px solid #2a2a30", outline:"none"}}/>
       <div onClick={previewAndMake} style={{width:"100%",aspectRatio:"9/16",background:"#000",borderRadius:16,overflow:"hidden",cursor:"pointer"}}>
-        {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : img ? <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <span style={{opacity:0.5,display:"flex",alignItems:"center",justifyContent:"center",height:"100%"}}>Tap to preview</span>}
+       {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : img ? <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <span style={{opacity:0.5,display:"flex",alignItems:"center",justifyContent:"center",height:"100%"}}>Tap to preview</span>}
       </div>
-      {videoUrl && <><video src={videoUrl} controls autoPlay /><a href={videoUrl} download="omnia.mp4">Download MP4</a></>}
+      <p className="text-xs text-slate-500">Add 3-5 photos - tap ✕ to remove, Clear all to cancel</p>
+      <button onClick={generate} className="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50">
+       Generate Mp4 🎬
+      </button>
+      {videoUrl && <><video src={videoUrl} controls autoPlay /><a href={videoUrl} download>Download MP4</a></>}
       <canvas ref={canvasRef} style={{display:"none"}}/>
     </div>
   </div>
