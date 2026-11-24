@@ -1,11 +1,13 @@
 import { useRef, useState } from "react"
 export default function Generator(){
+const [prompt,setPrompt]=useState("")
+  const [videoUrl,setVideoUrl]=useState<string|null>(null)
+  const [loading,setLoading]=useState(false)
   const [script,setScript]=useState("")
   const [img,setImg]=useState<string|null>(null)
   const canvasRef=useRef<HTMLCanvasElement>(null)
   const [key,setKey]=useState("")
   const [unlocked,setUnlocked]=useState(false)
-  const [videoUrl,setVideoUrl]=useState<string|null>(null)
   if(!unlocked) return (
     <div style={{padding:40,maxWidth:400,margin:"0 auto"}}>
       <h2>Private Generator</h2>
