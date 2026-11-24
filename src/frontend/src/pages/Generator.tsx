@@ -16,9 +16,28 @@ const [prompt,setPrompt]=useState("")
     </div>
   )
   const onImg=(e:any)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=()=>setImg(r.result as string); r.readAsDataURL(f)}}
-  const previewAndMake=async()=>{
-  if(!img||!script) return alert("Add image + script")
-  await exportVid() 
+const previewAndMake = async () => {
+  if(!img || !script) return alert("Add image + script")
+  setLoading(true)
+  try {
+    // 2. Script -> Audio via OpenAI TTS
+    const tts = await fetch("https://api.openai.com/v1/audio/speech", {
+      method:"POST",
+      headers:{ "Authorization":`Bearer ${import.meta.env.VITE_OPENAI_KEY}`, "Content-Type":"application/json"},
+      body: JSON.stringify({ model:"tts-1", voice:"alloy", input: script })
+    })
+    const audioBlob = await tts.blob()
+    // 3. Image + Audio -> Video via your Render backend -> Replicate fal/wav2lip
+    const form = new FormData()
+    form.append("image", img)
+    form.append("audio", audioBlob)
+    if(prompt) form.append("prompt", prompt)
+    
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/generate-video`, { method:"POST", body: form })
+    const data = await res.json()
+    setVideoUrl(data.videoUrl)
+  } catch(e){ alert("Failed: "+e) }
+  setLoading(false)
 }
 const exportVid=async()=>{
   if(!canvasRef.current||!img||!script) return alert("Add image + script")
@@ -43,6 +62,7 @@ setVideoUrl(url)
       <h1 style={{fontSize:28, fontWeight:800, letterSpacing:0.5, textShadow:"0 0 20px rgba(109,40,255,0.8)"}}>Omnia MP4 Generator</h1>
       <p style={{opacity:0.7, marginTop:6}}>Cinematic 9:16 • Glow Forge</p>
       <input type="file" accept="image/*" onChange={onImg} style={{marginTop:16, width:"100%", padding:12, background:"#111", border:"1px solid #333", borderRadius:12, color:"#fff"}}/>
+      <input placeholder="Prompt: 90s office zoom" value={prompt} onChange={e=>setPrompt(e.target.value)}/>
       <textarea value={script} onChange={e=>setScript(e.target.value)} placeholder="Paste 90s script here..." rows={8} style={{width:"100%",marginTop:12, padding:14, borderRadius:12, background:"#0f0f12", color:"#fff", border:"1px solid #2a2a30", outline:"none"}}/>
       <div onClick={previewAndMake} style={{width:"100%",aspectRatio:"9/16",background:"#000",borderRadius:16,overflow:"hidden",cursor:"pointer"}}>
        {videoUrl ? <video src={videoUrl} autoPlay controls style={{width:"100%",height:"100%"}}/> : img ? <img src={img} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <span style={{opacity:0.5,display:"flex",alignItems:"center",justifyContent:"center",height:"100%"}}>Tap to preview</span>}
