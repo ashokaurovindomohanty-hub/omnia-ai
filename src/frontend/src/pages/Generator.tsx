@@ -46,7 +46,7 @@ export default function Generator() {
     setVideoUrl(null)
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/generate-video`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: img, script, prompt })
