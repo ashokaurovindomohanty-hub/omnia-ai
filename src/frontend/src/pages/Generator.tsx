@@ -40,17 +40,18 @@ export default function Generator() {
   }
 
   const previewAndMake = async () => {
-    if (!img || !script) return alert("Add image + script")
-
-    setLoading(true)
-    setVideoUrl(null)
-
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/generate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: img, script, prompt })
-      })
+  if (!img || !script) return alert("Add image + script")
+  setLoading(true)
+  setVideoUrl(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": import.meta.env.VITE_API_KEY
+      },
+      body: JSON.stringify({ image: img, script, prompt })
+    })
 
       if (!res.ok) {
         throw new Error(`Video generation failed (${res.status})`)
