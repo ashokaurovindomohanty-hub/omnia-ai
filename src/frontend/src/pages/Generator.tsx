@@ -39,18 +39,14 @@ export default function Generator() {
     reader.readAsDataURL(file)
   }
 
-  const previewAndMake = async () => {
+const previewAndMake = async () => {
   if (!img || !script) return alert("Add image + script")
   setLoading(true)
   setVideoUrl(null)
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/generate`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/generate?prompt=${encodeURIComponent(script)}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": import.meta.env.VITE_API_KEY
-      },
-      body: JSON.stringify({ image: img, script, prompt })
+      headers: { "x-api-key": import.meta.env.VITE_API_KEY }
     })
 
       if (!res.ok) {
